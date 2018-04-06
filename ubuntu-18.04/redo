@@ -1,0 +1,34 @@
+#!/bin/bash
+
+PACK="ubuntu-18.04-install"
+YAML="../${PACK}.yaml"
+
+DESC="$PACK - BETA DAILY ISOs"
+NAME="$PACK"
+SRC="RackN"
+#ORIGIN="${SRC,,}/${PACK,,}"
+ORIGIN="sygibson/${PACK,,}"
+
+if [[ -r ._Version.meta ]]
+then
+	CVER=`cat ._Version.meta`
+	read -p "Enter new version number (current: '$CVER'):  " VER
+else
+	VER="v0.0.1"
+fi
+
+printf "$DESC" > ._Description.meta
+printf "$NAME" > ._Name.meta
+printf "$SRC" > ._Source.meta
+printf "$VER" > ._Version.meta
+printf "$ORIGIN" > ._Origin.meta
+
+drpcli contents exists $PACK       \
+  && drpcli contents destroy $PACK \
+  || echo "Content pack '$PACK' does not exist ... "
+
+set -e
+
+rm -f $YAML 
+~/bin/linux/amd64/drbundler . $YAML 
+drpcli contents create $YAML 

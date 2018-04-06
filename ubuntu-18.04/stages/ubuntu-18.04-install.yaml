@@ -1,0 +1,19 @@
+BootEnv: ubuntu-18.04-install
+Description: Ubuntu 18.04 Beta 2 installation stage.  References Beta-2 stage.
+Errors: []
+Meta:
+  color: yellow
+  icon: download
+  title: Digital Rebar Community Content
+Name: ubuntu-18.04-install
+OptionalParams: []
+Profiles: []
+ReadOnly: true
+Reboot: false
+RequiredParams: []
+RunnerWait: true
+Tasks:
+- ubuntu-drp-only-repos
+- ssh-access
+Templates: []
+
