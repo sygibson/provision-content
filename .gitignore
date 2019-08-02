@@ -12,3 +12,9 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+
+# ignore our bundles we build
+bundles
+
+# ignore the pile of SHIT that mac poops everywhere
+.DS_Store
