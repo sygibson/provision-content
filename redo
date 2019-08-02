@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# Quick script to manage bundling and uploading content pack
+
+PACK="$1"
+
+function xiterr() { [[ $1 =~ ^[0-9]+$ ]] && { XIT=$1; shift; } || XIT=1; printf "FATAL: $*\n"; exit $XIT; }
+
+usage() {
+  echo ""
+  echo "USAGE:  $0 [content-pack]"
+  echo "WHERE:"
+  echo "        content-pack       is a directory that contains a Digital Rebar"
+  echo "                           Provision content pack to bundle up"
+  echo ""
+  echo " NOTE:  Contents will be bundled in the 'bundles' directory as pack with"
+  echo "        name 'content-pack.yaml"
+  echo ""
+}
+
+( which drpcli > /dev/null 2>&1 ) && echo "Found 'drpcli' tool." || xiterr "FATAL: Unable to locate 'drpcli' in PATH ('$PATH')"
+
+if [[ -z "$1" ]]
+then
+  echo "Incorrect usage."
+  usage
+  exit 1
+else
+  [[ ! -d "$PACK" ]] && xiterr "Content pack / directory doesn't exist ('$PACK')."
+fi
+
+YAML="$(pwd)/bundles/${PACK}.yaml"
+cd $PACK || xiterr "FATAL: Unable to 'cd' to $PACK"
+
+make_meta() {
+  DESC="$PACK"
+  NAME="$PACK"
+  SRC="RackN"
+  #ORIGIN="${SRC,,}/${PACK,,}"
+  GH="https://github.com/sygibson/provision-content/tree/master"
+  ORIGIN="${GH}/${PACK,,}"
+
+  printf "$DESC" > ._Description.meta
+  printf "$NAME" > ._Name.meta
+  printf "$SRC" > ._Source.meta
+  printf "$VER" > ._Version.meta
+  printf "$ORIGIN" > ._Origin.meta
+}
+
+fix_up_version() {
+  if [[ -r ._Version.meta ]]
+  then
+	  VER=`cat ._Version.meta`
+	  read -p "Enter new version number (current: '$VER'):  " VER
+  else
+	  VER="v0.0.1"
+  fi
+}
+
+# update does this magically now
+#drpcli contents exists $PACK       \
+#  && drpcli contents destroy $PACK \
+#  || echo "Content pack '$PACK' does not exist ... "
+
+fix_up_version
+set -e
+
+rm -f $YAML
+#~/bin/linux/amd64/drbundler . $YAML
+set -x
+drpcli contents bundle $YAML
+drpcli contents upload $YAML
