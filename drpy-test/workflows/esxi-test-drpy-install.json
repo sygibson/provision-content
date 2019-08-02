@@ -1,0 +1,1 @@
+{"Validated":false,"Available":false,"Errors":null,"ReadOnly":false,"Meta":{"color":"pink","icon":"cloud","title":"User added"},"Endpoint":"","Bundle":"esxi-test-drpy","Name":"esxi-test-drpy-install","Description":"Test DRPY VIB install process.","Documentation":"","Stages":["esxi-670u2-install","test-drpy","finish-install","test-drpy","complete"]}
