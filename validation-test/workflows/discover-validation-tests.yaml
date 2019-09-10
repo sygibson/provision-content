@@ -7,6 +7,7 @@ Description: Validation Demo Test
 Stages:
   - discover
   - inventory
+  - in-subnet-check-render
   - validation-post-discover
   - fake-hardware-setup
   - validation-post-hardware
