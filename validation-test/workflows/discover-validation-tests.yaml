@@ -1,0 +1,13 @@
+---
+Name: validation-test
+Meta:
+  color: grey
+  icon: world
+Description: Validation Demo Test
+Stages:
+  - discover
+  - inventory
+  - validation-post-discover
+  - fake-hardware-setup
+  - validation-post-hardware
+  - sledgehammer-wait

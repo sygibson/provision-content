@@ -1,0 +1,11 @@
+---
+Name: validation-tests
+Meta:
+  color: orange
+  icon: world
+Params:
+  validation/post-discover:
+    - "in-subnet-check-validate"
+  validation/post-hardware:
+    - "ipmi-network-validation"
+

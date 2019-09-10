@@ -1,0 +1,10 @@
+---
+Name: fake-hardware-setup
+Meta:
+  color: grey
+  icon: world
+Description: Fake Hardware Setup
+Templates:
+  - ID: fake-hardware-setup.sh.tmpl
+    Contents: ""
+    Name: Fake Hardware Setup

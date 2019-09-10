@@ -1,0 +1,8 @@
+---
+Name: fake-hardware-setup
+Meta:
+  color: grey
+  icon: world
+Description: Fake Hardware Setup
+Tasks:
+  - fake-hardware-setup
