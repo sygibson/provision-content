@@ -1,0 +1,9 @@
+---
+Name: "container-demo"
+Description: "Demo Of Stage"
+Tasks:
+  - "container-demo"
+Meta:
+  icon: "boxes"
+  color: "black"
+  title: "RackN Content"

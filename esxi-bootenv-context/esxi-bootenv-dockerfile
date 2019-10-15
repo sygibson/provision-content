@@ -1,0 +1,7 @@
+FROM alpine:latest
+RUN apk add --update bash jq cdrkit wget util-linux
+COPY make-esxi-content-pack.sh /usr/bin/make-esxi-content-pack.sh
+COPY drpcli /usr/bin/drpcli
+RUN chmod 755 /usr/bin/drpcli
+RUN chmod 755 /usr/bin/make-esxi-content-pack.sh
+ENTRYPOINT /usr/bin/drpcli machines processjobs

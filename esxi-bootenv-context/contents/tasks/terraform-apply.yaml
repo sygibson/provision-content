@@ -1,0 +1,32 @@
+---
+Description: "A task run Terraform Templates"
+Name: "terraform-apply"
+RequiredParams:
+  - "terraform/state-username"
+  - "terraform/state-password"
+OptionalParams:
+  - "terraform/plan-action"
+Templates:
+  - Contents: |-
+      {{template "terraform-backend.tf.tmpl" .}}
+
+      {{template "terraform-aws.tf.tmpl" .}}
+
+      resource "aws_instance" "drp" {
+        ami           = "{{ .Param "aws/instance-ami" }}"
+        instance_type = "{{ .Param "aws/instance-type" }}"
+
+        tags = {
+          Name = "{{ .Machine.Name }}"
+          DRP =  "{{ .ApiURL }}"
+        }
+      }
+    Name: "digitalrebar.tf"
+    Path: "digitalrebar.tf"
+  - ID: "terraform-apply.sh.tmpl"
+    Name: "Terraform Init and Apply Plan"
+Meta:
+  icon: "map"
+  color: "blue"
+  title: "Digital Rebar Community Content"
+  feature-flags: "sane-exit-codes"

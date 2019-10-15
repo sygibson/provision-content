@@ -1,0 +1,10 @@
+Name: "terraform-create"
+Description: "Use Terraform Plan for Machine"
+Documentation: |
+  Requires that operator has created a Context "dz" that can run Terraform
+Stages:
+  - "terraform-apply"
+Meta:
+  color: "purple"
+  icon: "sliders"
+  title: "RackN Content"

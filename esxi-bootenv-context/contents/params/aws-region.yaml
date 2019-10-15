@@ -1,0 +1,13 @@
+---
+Name: "aws/region"
+Description: "AWS Region"
+Documentation: |
+  Region for AWS to be used by Terraform
+Secure: true
+Schema:
+  type: "string"
+  default: "us-west-2"
+Meta:
+  color: "green"
+  icon: "map outline"
+  title: "RackN Content"

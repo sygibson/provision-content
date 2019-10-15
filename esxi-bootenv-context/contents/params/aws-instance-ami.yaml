@@ -1,0 +1,13 @@
+---
+Name: "aws/instance-ami"
+Description: "AWS AMI Instance ID"
+Documentation: |
+  AMI to use in Terraform by default
+Secure: true
+Schema:
+  type: "string"
+  default: "ami-04b762b4289fba92b"
+Meta:
+  color: "black"
+  icon: "disk outline"
+  title: "RackN Content"

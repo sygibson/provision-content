@@ -1,0 +1,19 @@
+---
+Description: "A task run container demo"
+Name: "container-demo"
+Templates:
+  - Contents: |-
+      #!/bin/bash
+      # RackN Copyright 2019
+
+      echo "=== do we have a /tmp/hello.txt file? ==="
+      cat /tmp/hello.txt
+      echo "=== create file ==="
+      echo "hello world from {{ .Machine.Name }}" | tee -a /tmp/hello.txt
+      echo "== end ==="
+    Name: "demo"
+Meta:
+  icon: "spy"
+  color: "purple"
+  title: "Digital Rebar Community Content"
+  feature-flags: "sane-exit-codes"

@@ -1,0 +1,10 @@
+Name: "demo-context"
+Description: "Use Terraform Plan for Machine"
+Documentation: |
+  Requires that operator has created a Context "dz" that can run Terraform
+Stages:
+  - "container-demo"
+Meta:
+  color: "purple"
+  icon: "boxes"
+  title: "RackN Content"

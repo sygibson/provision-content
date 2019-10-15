@@ -1,0 +1,13 @@
+---
+Name: "aws/instance-type"
+Description: "AWS EC2 Instance Type"
+Documentation: |
+  EC2 Type to use in Terraform by default
+Secure: true
+Schema:
+  type: "string"
+  default: "t2.micro"
+Meta:
+  color: "black"
+  icon: "box"
+  title: "RackN Content"

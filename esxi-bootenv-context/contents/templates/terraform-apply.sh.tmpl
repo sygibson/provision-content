@@ -1,0 +1,27 @@
+#!/bin/bash
+# RackN Copyright 2019
+# Apply Terraform Templates
+
+set -e
+
+{{template "setup.tmpl" .}}
+
+echo "=== INIT $(terraform version) ===="
+
+terraform init -no-color
+
+{{ if .ParamExists "rs-debug-enable" }}
+{{ if eq (.Param "rs-debug-enable") true }}
+
+echo "=== PLAN (DEBUG) TERRAFORM ===="
+
+terraform plan -no-color
+
+{{ end }}
+{{ end }}
+
+echo "=== RUN {{ .Param "terraform/plan-action" }} TERRAFORM ===="
+
+terraform {{ .Param "terraform/plan-action" }} -no-color -auto-approve
+
+echo "=== DONE ===="
