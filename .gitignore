@@ -18,3 +18,7 @@ bundles
 
 # ignore the pile of SHIT that mac poops everywhere
 .DS_Store
+
+# ignore content pack artifacts
+faasd-rpi/faasd.yaml
+faasd-rpi/faasd-rpi.yaml
