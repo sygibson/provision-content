@@ -2,7 +2,10 @@ FaaSD on Raspberry PI Content Pack
 ==================================
 
 This content provides deployment and operational workflows to manage the OpenFaaS service
-on Raspberry Pi (RPi) platforms.
+on Raspberry Pi (RPi) platforms.  It is based on the excellent OpenFaas/FaasD work that
+Alex Ellis has done, and the original blog/install post by him, located at:
+
+  * https://blog.alexellis.io/faasd-for-lightweight-serverless/
 
 
 Digital Rebar Platform
@@ -65,6 +68,9 @@ Here are a few future enhancement possibilities for this content pack:
   * more operational workflows to extend daily interaction/operation of the cluster
   * determine if this tooling can be easily extrapolated to a non-platform (x86_64 vs arm)
     hardware install and management process
+  * Parameterize the Versions that are installed, with tested/safe defaults
+  * Determine if the ``install`` stage could be better broken out to discrete taks for reusability
+
 
 Installation Reference
 ----------------------
