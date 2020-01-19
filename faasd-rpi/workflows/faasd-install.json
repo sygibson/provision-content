@@ -1,1 +1,0 @@
-{"Validated":false,"Available":false,"Errors":null,"ReadOnly":false,"Meta":{"color":"blue","icon":"cogs","title":"faasd-rpi"},"Endpoint":"","Bundle":"faasd-rpi","Name":"faasd-install","Description":"Install the FaaSD service on a Machine.","Documentation":"","Stages":["faasd-install","faasd-collect-auth"]}

@@ -25,13 +25,24 @@ Templates:
     # sets FAASD_PLATFORM variable
     {{template "faasd-platform.tmpl" .}}
 
-        # install git if not already
-    echo ">>> Checking for 'git' dependency"
-    if ! which git > /dev/null 2>&1; then
-      which apt > /dev/null 2>&1 && INST="apt" || true
-      which yum > /dev/null 2>&1 && INST="yum" || true
-      $INST -y install git
-    fi
+    DEPS="git runc bridge-utils"
+    # install git if not already
+    echo ">>> Checking for dependency packages ($DEPS)"
+    for DEP in $DEPS; do
+      CHK="$DEP"
+      case $DEP in
+        bridge-utils) CHK="brctl" ;;
+      esac
+      if ! which $CHK > /dev/null 2>&1; then
+        echo "Adding '$DEP' to install list."
+        ADD_DEPS+="$DEP "
+      else
+        echo "Dependency '$DEP' is available"
+      fi
+    done
+
+    # 'install' comes from "helper" inside of "setup.tmpl"
+    [[ -n "$ADD_DEPS" ]] && { echo "Installing dependencies: '$ADD_DEPS'"; install $ADD_DEPS; }
 
     # these should become DRP Params
     VER_CONTAINERD="v1.3.2"
