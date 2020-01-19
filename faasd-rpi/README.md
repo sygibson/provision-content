@@ -57,6 +57,23 @@ installation, along with the following validation tests of the service:
   * deploy the ``NodeInfo`` function to the service
   * test the operation of the ``NodeInfo`` function
 
+Building the Content Pack
+-------------------------
+
+Standard Digital Rebar content pack handling applies to this content pack.  If you are unfamiliar
+with operating DRP content pack, please check out the training/demo content pack for reference
+documentation and videos, at:
+
+  * https://github.com/digitalrebar/colordemo
+
+Basically - simply "bundle and upload", as follows:
+
+  * bundle: ``drpcli contents bundle faasd.yaml Version=v$(date +%y.%m.%d-%H.%M.%S)``
+  * note the ``Version`` meta data is not strictly required, but it is good practice
+  * upload:  ``drpcli contents upload faasd.yaml``
+  * standard CLI flags may be required to connect to your DRP endpoint and authenticate
+    against it - specifically ``-E https://10.10.10.10:8092``, ``-U admin``, and/or ``-P s3cr3ts``
+
 
 Future Enhancements
 -------------------
