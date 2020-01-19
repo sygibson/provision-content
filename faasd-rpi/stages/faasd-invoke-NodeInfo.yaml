@@ -1,0 +1,21 @@
+---
+Name: faasd-invoke-NodeInfo
+BootEnv: ""
+Description: A stage to run the NodeInfo function for testing.
+Documentation: |
+  A stage to run (invoke) the NodeInfo function; generally for testing
+  purposes.
+
+Meta:
+  color: black
+  icon: crosshairs
+  title: faasd-rpi
+OptionalParams: []
+Params: {}
+Profiles: []
+RequiredParams: []
+RunnerWait: true
+Tasks:
+  - faasd-invoke-NodeInfo
+Templates: []
+

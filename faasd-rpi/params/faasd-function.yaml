@@ -1,0 +1,19 @@
+---
+Name: faasd/function
+Description: Specifies the function to operate on in a FaaSD command.
+Documentation: |
+  This param defines the function to operate on for subsequent FaaSD commands.  This
+  is typically used in the ``faasd-deploy-function`` Task.
+
+  By default the ``NodeInfo`` function will be installed if this value is not set on
+  a Machine.
+
+Meta:
+  color: blue
+  icon: crosshairs
+  title: faasd-rpi
+ReadOnly: true
+Schema:
+  type: string
+  default: "NodeInfo"
+Secure: false

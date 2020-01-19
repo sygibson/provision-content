@@ -1,0 +1,8 @@
+# figure out our platform type for the function deploy
+P=$(uname -p)
+case $P in
+  aarch64|armhf) export FAASD_PLATFORM="armhf"  ;;
+  x86_64|amd64)  export FAASD_PLATFORM="x86_64" ;;
+  *) echo "FATAL:  Unsupported platform type '$P'."
+     exit 1 ;;
+esac

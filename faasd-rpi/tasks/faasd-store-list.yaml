@@ -1,0 +1,35 @@
+---
+Name: faasd-store-list
+Description: Show the faasd store functions that are available.
+Documentation: |
+  A task to show the FaaSD store functions that are available for the platform.
+
+Meta:
+  color: purple
+  feature-flags: sane-exit-codes
+  icon: list
+  title: faasd-rpi
+OptionalParams: []
+Prerequisites: []
+RequiredParams: []
+Templates:
+- Contents: |-
+    #!/usr/bin/env bash
+    # Show the FaaSD store function that are available for the platform.
+
+    set -e
+
+    # Get access and who we are.
+    {{template "setup.tmpl" .}}
+    # sets FAASD_PLATFORM variable
+    {{template "faasd-platform.tmpl" .}}
+
+    echo ">>> Starting store list for FaaS functions"
+
+    # Deploy NodeInfo
+    faas-cli store list --platform ${FAASD_PLATFORM}
+
+  ID: ""
+  Name: faasd-store-list.sh
+  Path: ""
+

@@ -1,0 +1,39 @@
+---
+Name: faasd-deploy-function
+Description: Deploy function on an existing FaaSD service.
+Documentation: |
+  A task to install function specified by the Param ``faasd/function`` on an
+  OpenFaaSD service.
+Meta:
+  color: green
+  feature-flags: sane-exit-codes
+  icon: cogs
+  title: faasd-rpi
+OptionalParams:
+  - faasd/function
+Prerequisites: []
+RequiredParams: []
+Templates:
+- Contents: |-
+    #!/usr/bin/env bash
+    # Deploy a FaasD function specified by faasd/function Param
+
+    set -e
+
+    # Get access and who we are.
+    {{template "setup.tmpl" .}}
+    # sets FAASD_PLATFORM variable
+    {{template "faasd-platform.tmpl" .}}
+
+    # make this a Param as input
+    FUNC='{{ .Param "faasd/function" }}'
+    echo ">>> Deploying FaaS function '$FUNC'"
+
+    # Deploy NodeInfo
+    faas-cli store deploy --platform ${FAASD_PLATFORM} "${FUNC}"
+    faas-cli store inspect "${FUNC}"
+
+  ID: ""
+  Name: faasd-deploy-function.sh
+  Path: ""
+

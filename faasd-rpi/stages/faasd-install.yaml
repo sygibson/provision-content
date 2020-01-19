@@ -1,0 +1,19 @@
+---
+Name: faasd-install
+BootEnv: ""
+Description: A stage to install the FaaSD service.
+Documentation: |
+  A stage to install the FaaSD service.
+Meta:
+  color: blue
+  icon: cogs
+  title: faasd-rpi
+OptionalParams: []
+Params: {}
+Profiles: []
+RequiredParams: []
+RunnerWait: true
+Tasks:
+  - faasd-install
+Templates: []
+

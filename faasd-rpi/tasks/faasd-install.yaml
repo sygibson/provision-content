@@ -1,0 +1,144 @@
+---
+Name: faasd-install
+Description: Install OpenFaaSD on Raspberry Pi
+Documentation: |
+  A task to install OpenFaaSD on Raspberry Pi
+Meta:
+  color: blue
+  feature-flags: sane-exit-codes
+  icon: cogs
+  title: faasd-rpi
+OptionalParams: []
+Prerequisites: []
+RequiredParams: []
+Templates:
+- Contents: |-
+    #!/usr/bin/env bash
+    # Install OpenFaaS on Raspberry Pi
+    # reference: https://blog.alexellis.io/faasd-for-lightweight-serverless/
+
+    # in the future this should be broken out into individual tasks for reusability
+    set -e
+
+    # Get access and who we are.
+    {{template "setup.tmpl" .}}
+    # sets FAASD_PLATFORM variable
+    {{template "faasd-platform.tmpl" .}}
+
+        # install git if not already
+    echo ">>> Checking for 'git' dependency"
+    if ! which git > /dev/null 2>&1; then
+      which apt > /dev/null 2>&1 && INST="apt" || true
+      which yum > /dev/null 2>&1 && INST="yum" || true
+      $INST -y install git
+    fi
+
+    # these should become DRP Params
+    VER_CONTAINERD="v1.3.2"
+    VER_CNI_PLUGIN="v0.8.4"
+    VER_FAAS_CONTAINERD="0.5.3"
+    VER_FAASD="0.5.0"
+
+    if ! echo $PATH | grep "/usr/local/bin" > /dev/null; then
+      export PATH=/usr/local/bin:$PATH
+      if test -d /etc/profile.d; then
+        if ! test -r /etc/profile.d/local-bin-path.sh; then
+          echo ">>> Adding /etc/profile.d/local-bin-path.sh fixup."
+          echo 'if ! echo $PATH | grep "/usr/local/bin" > /dev/null; then export PATH=/usr/local/bin:$PATH; fi' \
+            | sudo tee /etc/profile.d/local-bin-path.sh > /dev/null
+        fi
+      fi
+    fi
+
+    echo ">>> Verifying 'sudo' allos path '/usr/local/bin'."
+    if ! $(grep "Defaults.*secure_path" /etc/sudoers | grep -q "/usr/local/bin"); then
+      echo ">>> Fixing '/etc/sudoers' to include '/usr/local/bin' in 'secure_path'."
+      sed -i.bak 's|^\(Defaults.*secure_path = \)/|\1/usr/local/bin:/|' /etc/sudoers
+    fi
+
+    # install faas-cli
+    echo ">>> Get FaaS CLI and install it"
+    curl -sLfS https://cli.openfaas.com | sudo sh
+    sudo systemctl stop containerd || true
+
+    # trust Alex Ellis's pre-built ARMHF prebuilt containerd binaries
+    echo ">>> Install armhf containerd"
+    curl -sSL https://github.com/alexellis/containerd-armhf/releases/download/${VER_CONTAINERD}/containerd.tgz | sudo tar -xvz --strip-components=2 -C /usr/local/bin/
+
+    # get the systemd service file and start up containerd
+    echo ">>> Set up systemd service files for containerd"
+    curl -SLfs https://raw.githubusercontent.com/containerd/containerd/${VER_CONTAINERD}/containerd.service | sudo tee /etc/systemd/system/containerd.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable containerd
+    sudo systemctl start containerd
+
+    # Install Networking - One-off
+    echo ">>> Fix up networking 'br_netfilter' and 'bridge-nf-call-iptables'"
+    sudo modprobe br_netfilter
+    sysctl net.bridge.bridge-nf-call-iptables=1
+    # Make it permanent
+    echo "br_netfilter" | sudo tee -a /etc/modules-load.d/modules.conf
+    echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
+
+    # install netns for bridged container networking - future will use CNI
+    echo ">>> Install netns arm version for bridged container networking"
+    sudo curl -fSLs "https://github.com/genuinetools/netns/releases/download/v0.5.3/netns-linux-arm" \
+      --output "/usr/local/bin/netns" \
+      && sudo chmod a+x "/usr/local/bin/netns"
+
+    # install CNI plugins
+    echo ">>> Install CNI plugins"
+    sudo mkdir -p /opt/cni/bin
+    curl -sSL https://github.com/containernetworking/plugins/releases/download/${VER_CNI_PLUGIN}/cni-plugins-linux-arm-${VER_CNI_PLUGIN}.tgz | sudo tar -xz -C /opt/cni/bin
+
+    # enable NAT
+    echo ">>> Enable IP Forwarding/NAT"
+    sudo /sbin/sysctl -w net.ipv4.conf.all.forwarding=1
+    echo "net.ipv4.conf.all.forwarding=1" | sudo tee -a /etc/sysctl.conf
+
+    ### Install faasd and faasd-containerd
+
+    # Stop systemd services, if you have them
+
+    sudo systemctl stop faasd || true
+    sudo systemctl stop faas-containerd || true
+
+    # Remove old binaries if you have them
+    sudo rm -rf /usr/local/bin/faas-containerd
+    sudo rm -rf /usr/local/bin/faasd
+
+    # Get/install the new ones
+    echo ">>> Install FaaS containerd"
+    sudo curl -sSLf "https://github.com/alexellis/faas-containerd/releases/download/${VER_FAAS_CONTAINERD}/faas-containerd-armhf" \
+      --output "/usr/local/bin/faas-containerd" \
+      && sudo chmod a+x "/usr/local/bin/faas-containerd"
+    echo ">>> Install FaaSD"
+    sudo curl -sSLf "https://github.com/alexellis/faasd/releases/download/${VER_FAASD}/faasd-armhf" \
+      --output "/usr/local/bin/faasd" \
+      && sudo chmod a+x "/usr/local/bin/faasd"
+
+    # now run them
+    export GOPATH=$HOME/go/
+    export F_DIR=$GOPATH/src/github.com/alexellis
+    mkdir -p $F_DIR
+    cd $F_DIR
+
+    if [[ -d faasd ]]; then
+      cd faasd
+      git checkout master
+      git pull
+    else
+      git clone https://github.com/alexellis/faasd
+      cd faasd
+    fi
+    sudo faasd install
+
+    sudo systemctl daemon-reload
+    sudo systemctl status faasd
+    sudo systemctl status faas-containerd
+
+    exit 0
+  ID: ""
+  Name: faasd-install.sh
+  Path: ""
+

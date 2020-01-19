@@ -1,0 +1,19 @@
+---
+Name: faasd-collect-auth
+BootEnv: ""
+Description: A stage to collect user/pass auth info on a FaaSD service.
+Documentation: |
+  A stage to collect user/pass auth info on a FaaSD service.
+Meta:
+  color: blue
+  icon: cogs
+  title: faasd-rpi
+OptionalParams: []
+Params: {}
+Profiles: []
+RequiredParams: []
+RunnerWait: true
+Tasks:
+  - faasd-collect-auth
+Templates: []
+

@@ -1,0 +1,19 @@
+---
+Name: faasd-test
+Description: An end-to-end install, function deploy, and test workflow for FaaSD.
+Documentation: |
+  This workflow will run the ``faasd-install`` stage, deploy the ``NodeInfo`` function
+  on the Machine, then invoke the function to fully test end-to-end deployment and
+  use of this content pack.
+
+Meta:
+  color: black
+  icon: flag checkered
+  title: faasd-rpi
+Stages:
+  - faasd-install
+  - faasd-collect-auth
+  - faasd-store-list
+  - faasd-deploy-function
+  - faasd-invoke-NodeInfo
+

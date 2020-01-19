@@ -1,0 +1,12 @@
+---
+Name: faasd-install
+Description: Install the FaaSD service on a Machine.
+Documentation: ""
+Meta:
+  color: blue
+  icon: cogs
+  title: faasd-rpi
+Stages:
+  - faasd-install
+  - faasd-collect-auth
+

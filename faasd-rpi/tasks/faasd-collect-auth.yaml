@@ -1,0 +1,41 @@
+---
+Name: faasd-collect-auth
+Description: Collect username and password auth info from FaaSD service install.
+Documentation: |
+  Collect username and password auth info from FaaSD service install.
+Meta:
+  color: blue
+  feature-flags: sane-exit-codes
+  icon: cogs
+  title: faasd-rpi
+OptionalParams: []
+Prerequisites: []
+RequiredParams: []
+Templates:
+- Contents: |-
+    #!/usr/bin/env bash
+    # Install OpenFaaS on Raspberry Pi
+    # reference: https://blog.alexellis.io/faasd-for-lightweight-serverless/
+
+    # in the future this should be broken out into individual tasks for reusability
+    set -e
+
+    # Get access and who we are.
+    {{template "setup.tmpl" .}}
+    # sets FAASD_PLATFORM variable
+    {{template "faasd-platform.tmpl" .}}
+
+    # collect and record infoz
+    echo ">>> Record FaaSD user/password information"
+    UF="/run/faasd/secrets/basic-auth-user"
+    PF="/run/faasd/secrets/basic-auth-password"
+    [[ -r "$UF" ]] && U=$(cat /run/faasd/secrets/basic-auth-user)
+    [[ -r "$PF" ]] && P=$(cat /run/faasd/secrets/basic-auth-password)
+    drpcli machines set ${RS_UUID} param faasd/basic-auth-user to $U
+    drpcli machines set ${RS_UUID} param faasd/basic-auth-password to $P
+
+    exit 0
+  ID: ""
+  Name: faasd-collect-auth.sh
+  Path: ""
+

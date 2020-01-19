@@ -1,0 +1,21 @@
+---
+Name: faasd-store-list
+BootEnv: ""
+Description: A stage to list functions available in the function store.
+Documentation: |
+  A stage to list functions in the function store.  This function will dynamically determine
+  platform architecture and request appropriate list for the platform.
+
+Meta:
+  color: purple
+  icon: list
+  title: faasd-rpi
+OptionalParams: []
+Params: {}
+Profiles: []
+RequiredParams: []
+RunnerWait: true
+Tasks:
+  - faasd-store-list
+Templates: []
+

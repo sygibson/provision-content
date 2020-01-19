@@ -1,0 +1,33 @@
+---
+Name: faasd-invoke-NodeInfo
+Description: Invokes the NodeInfo function on a FaaSD service.
+Documentation: |
+  A task to invoke the NodeInfo function on a FaaSD service.
+
+Meta:
+  color: black
+  feature-flags: sane-exit-codes
+  icon: crosshairs
+  title: faasd-rpi
+OptionalParams: []
+Prerequisites: []
+RequiredParams: []
+Templates:
+- Contents: |-
+    #!/usr/bin/env bash
+    # Invoke NodeInfo function on a FaaSD service.
+
+    set -e
+
+    # Get access and who we are.
+    {{template "setup.tmpl" .}}
+
+    echo ">>> Starting NodeInfo invoke function"
+
+    # Deploy NodeInfo
+    faas-cli invoke NodeInfo
+
+  ID: ""
+  Name: faasd-invoke-NodeInfo.sh
+  Path: ""
+
