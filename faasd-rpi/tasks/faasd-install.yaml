@@ -25,7 +25,7 @@ Templates:
     # sets FAASD_PLATFORM variable
     {{template "faasd-platform.tmpl" .}}
 
-    DEPS="git runc bridge-utils"
+    DEPS="git runc tmux bridge-utils"
     # install git if not already
     echo ">>> Checking for dependency packages ($DEPS)"
     for DEP in $DEPS; do
