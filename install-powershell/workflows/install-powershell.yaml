@@ -1,0 +1,8 @@
+---
+Name: install-powershell
+Description: Install PowerShell only
+Meta:
+  color: grey
+  icon: lightning
+Stages:
+  - install-powershell

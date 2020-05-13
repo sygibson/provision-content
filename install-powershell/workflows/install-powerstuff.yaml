@@ -1,0 +1,9 @@
+---
+Name: install-powerstuff
+Description: Install PowerShell and PowerCLI
+Meta:
+  color: grey
+  icon: lightning
+Stages:
+  - install-powershell
+  - install-powercli

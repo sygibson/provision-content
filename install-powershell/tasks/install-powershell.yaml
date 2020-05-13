@@ -1,0 +1,74 @@
+---
+Name: install-powershell
+Description: Install PowerShell on Linux
+Documentation: ""
+Meta:
+  color: yellow
+  feature-flags: sane-exit-codes
+  icon: lightning
+  title: RackN Content
+OptionalParams: []
+RequiredParams: []
+Prerequisites: []
+Templates:
+  - Name: "install-powershell-on-linux"
+    Path: ""
+    ID: ""
+    Meta:
+      OS: "linux"
+    Contents: |-
+      #!/usr/bin/env bash
+      # Install powershell on linux.
+
+      # get our OS_ variables set for use below
+      {{ template "setup.tmpl" .}}
+
+      echo "Setup of package repositories for microsoft powershell."
+
+      case $OS_FAMILY in
+        rhel|centos)
+          PKG="powershell"
+          curl https://packages.microsoft.com/config/rhel/7/prod.repo -o- | sudo tee /etc/yum.repos.d/microsoft.repo
+        ;;
+        debian|ubuntu)
+          PKG="powershell-preview"
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add –
+
+          # Thank you debian and ubuntu
+          case $OS_VER in
+            8)  RELEASE="jessie"; ARCH="amd64"               ;;
+            9)  RELEASE="stretch"; ARCH="amd64"              ;;
+            10) RELEASE="buster"; ARCH="amd64"               ;;
+            14.04) RELEASE="trusty"; ARCH="amd64"            ;;
+            16.04) RELEASE="xenial"; ARCH="amd64"            ;;
+            18.04) RELEASE="bionic"; ARCH="amd64"            ;;
+            19.04) RELEASE="disco"; ARCH="amd64"             ;;
+            19.10) RELEASE="eoan"; ARCH="amd64,armhf,arm64"  ;;
+            20.04) RELEASE="focal"; ARCH="amd64,armhf,arm64" ;;
+            *) echo "Unknown Ubuntu version - not supported ('$OS_VER') ... "
+               exit 1 ;;
+          esac
+
+          LIST="deb [arch=$ARCH] https://packages.microsoft.com/$OS_FAMILY/$OS_VER/prod $RELEASE main"
+          echo "Setting repo list to:"
+          echo ">>> $LIST"
+          cat "$LIST" > /etc/apt/sources.list.d/microsoft.list
+          sudo apt-get update
+        ;;
+        *)
+          echo "Unsupported OS_FAMILY ('$OS_FAMILY').  Sorry."
+          exit 1
+        ;;
+      esac
+
+      echo "Starting package install of '$PKG'."
+      install $PKG
+
+      echo "Testing running PowerShell - and showing installed version:"
+      pwsh --version
+
+      exit 0
+
+
+
+

@@ -1,0 +1,9 @@
+---
+Name: "install-powercli"
+Description: "Install PowerCLI on Linux systems."
+Tasks:
+  - "install-powercli"
+Meta:
+  icon: "lightning"
+  color: "yellow"
+  title: "Digital Rebar Community Content"
