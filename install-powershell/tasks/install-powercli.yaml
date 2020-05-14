@@ -1,0 +1,33 @@
+---
+Name: install-powercli
+Description: Install PowerCLI on Linux
+Documentation: ""
+Meta:
+  color: orange
+  feature-flags: sane-exit-codes
+  icon: lightning
+  title: RackN Content
+OptionalParams: []
+RequiredParams: []
+Prerequisites: []
+Templates:
+  - Name: "install-powercli-on-linux"
+    Path: ""
+    ID: ""
+    Meta:
+      OS: "linux"
+    Contents: |-
+      #!/usr/bin/env pwsh
+      # Install powercli on linux. Requires powershell installed already.
+
+      Write-Host "Starting PowerCLI Install ... "
+      Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"
+      Install-Module -Name Vmware.PowerCLI -Scope AllUsers -AllowClobber -SkipPublisherCheck -PassThru -Force -AcceptLicense
+      Write-Host "Checking PowerCLI Install Modules ... "
+      Get-Module "VMware.*" -ListAvailable | FT -Autosize
+
+      exit 0
+
+
+
+

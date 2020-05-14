@@ -1,0 +1,9 @@
+---
+Name: "install-powershell"
+Description: "Install PowerShell on Linux systems."
+Tasks:
+  - "install-powershell"
+Meta:
+  icon: "lightning"
+  color: "yellow"
+  title: "Digital Rebar Community Content"

@@ -1,0 +1,8 @@
+---
+Name: install-powercli
+Description: Install PowerCLI (requires PowerShell already installed).
+Meta:
+  color: grey
+  icon: lightning
+Stages:
+  - install-powercli
