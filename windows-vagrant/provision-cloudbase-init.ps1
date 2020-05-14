@@ -24,14 +24,22 @@ $artifactUrl = 'https://github.com/rgl/cloudbase-init-installer/releases/downloa
 $artifactPath = "$env:TEMP\$(Split-Path -Leaf $artifactUrl)"
 $artifactLogPath = "$artifactPath.log"
 
+$emptyMeta = 'cloudbaseinit.metadata.services.base.EmptyMetadataService'
+$extraMeta = ''
 $systemVendor = (Get-WmiObject Win32_ComputerSystemProduct Vendor).Vendor
 if ($systemVendor -eq 'QEMU') {
-    $metadataServices = 'cloudbaseinit.metadata.services.configdrive.NoCloudConfigDriveService'
+    $extraMeta = 'cloudbaseinit.metadata.services.configdrive.NoCloudConfigDriveService'
 } elseif ($systemVendor -eq 'VMware, Inc.') {
-    $metadataServices = 'cloudbaseinit.metadata.services.vmwareguestinfoservice.VMwareGuestInfoService'
+    $extraMeta = 'cloudbaseinit.metadata.services.vmwareguestinfoservice.VMwareGuestInfoService'
 } else {
     Write-Host "WARNING: cloudbase-init is not supported on your system vendor $systemVendor"
     Exit 0
+}
+
+if ($extraMeta -eq "") 
+    $metadataServices = "$emptyMeta"
+{ } else {
+    $metadataServices = "$emptyMeta,$extraMeta"
 }
 
 # NB we might have to retry the download due to errors:
